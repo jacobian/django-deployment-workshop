@@ -1,0 +1,9 @@
+*.pyc
+.installed.cfg
+bin
+bin
+develop-eggs
+downloads
+!downloads/.git-needs-this
+eggs
+parts
