@@ -11,7 +11,7 @@ for a Python WSGI stack, including:
     * Apache/mod_wsgi_ application servers.
     * Nginx_ load balancers and media servers.
     * Memcached_.
-    * PostgreSQL_ with `warm standby`_
+    * PostgreSQL_ with `pg_standby`_
 
 .. _fabric: http://fabfile.org/
 .. _buildout: http://buildout.org/
@@ -26,7 +26,8 @@ this won't make a whole lot of sense without actually taking the class. But this
 is all BSD-licensed, so please feel free to use it as a starting point for you
 own deployments.
 
-The Django site used for the examples is Derek Willis' Fumblerooski_.
+The Django site used for the examples is Derek Willis' Fumblerooski_. Many
+thanks to Derek for letting me (ab)use his code!
 
 .. _fumblerooski: http://github.com/dwillis/fumblerooski
 
