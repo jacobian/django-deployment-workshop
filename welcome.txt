@@ -1,0 +1,68 @@
+Howdy!
+
+You're getting this email because you're enrolled in the Django Deployment
+Workshop at PyCon 2010. I hope you're looking forward to it as much as I am!
+
+We've got a lot to cover, and the pace is going to be a bit frenetic, so here
+are some notes to help us hit the ground running.
+
+First, a couple of links for your reference:
+
+* All the code and configuration I'll be using is available on Github:
+  http://github.com/jacobian/django-deployment-workshop.
+  
+  Not everything's there just yet -- I'm still running through and testing that
+  everything works as advertised -- but I'll be pushing all the bits and pieces
+  up over the next couple days.
+
+  There are notes in the README about how to get started and how to get some
+  data to play with, which leads me to...
+  
+* If you'd like some sample data to play with, here you go:
+  XXXXXXXXXX (25 MB).
+  
+  Please note that this data represents a good deal of hard work. It is provided
+  only for purposes of the class, and not for any other use. So please don't
+  share this link or redistribute the data and please don't release anything we
+  make in the class publicly.
+
+If you want to be able to get your hands dirty and try the examples as we go,
+you'll need to do a bit of work before we begin. This stuff's all optional; if
+you'd rather just watch and take notes you'll be just fine. But if you want to
+try the examples out during the class, read on.
+
+One of the big challenges of real-world deployment is dealing with the
+differences among different deployment operating systems (and even among OS
+versions). So to make things run smoothly and ensure we're all on the same page,
+I've made a choice: I'm only going to cover Ubuntu 9.10 ("Karmic Koala").
+
+Thus, you'll need to have access to an Ubuntu 9.10 machine. Ideally, you'll want
+to have access to *four* such machines so that you can try out the various
+load-balancing and replication features I'll be covering. 
+
+Now, I obviously don't expect y'all to show up to PyCon with four servers in
+tow, so we're obviously talking virtualization here. You could use something
+like VMWare or VirtualBox, but I'd suggest using a of the cloud hosting
+platform. Two good choices are Rackspace (http://www.rackspacecloud.com/) Amazon
+(http://aws.amazon.com/).
+
+Of the two, Rackspace is cheaper and far easier to get started with, so if
+you're not already familiar with EC2, I'd suggest giving Rackspace a try. You
+should be able to have four servers up and running within a few minutes.
+
+Whatever you choose, you'll need to have these servers up and running by the
+time the class starts. I'll expect everyone who wants to follow along to already
+have their servers running.
+
+Now, if you'd like to try to follow along on a different OS, or with a different
+configuration, that's fine with me. However, the class'll be on a tight
+schedule, so I won't be able to answer questions or debug problems with other
+OSes.
+
+If you have any questions, please drop me an email (jacob@jacobian.org). I'll
+also be at PyCon Wednesday morning, and would be happy to meet up in person and
+help anyone with this pre-class work.
+
+See you in Atlanta!
+
+Jacob Kaplan-Moss
