@@ -23,13 +23,14 @@ MEDIA_URL = '/m/'
 ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 SECRET_KEY = 'd8i0we+qjkwf*xt&fxl^$)x1pa-c%=$ib(^vrcy2z3y8!w_sua'
-SITE_ID = 1
+USE_I18N = False
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'fumblerooski.urls'
@@ -38,11 +39,15 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.humanize',
     'django.contrib.sessions',
     'django.contrib.sites',
-    'fumblerooski',
+    'django.contrib.markup',
+    'django.contrib.humanize',
+    'django.contrib.flatpages',
     'googlecharts',
+    'fumblerooski.college',
+    'fumblerooski.blog',
+    'fumblerooski.rankings',
 )
 
 TEMPLATE_LOADERS = (
@@ -56,3 +61,6 @@ TEMPLATE_DIRS = (
 )
 
 
+# Fumblerooski settings
+SITE_ID = 2
+CURRENT_SEASON = 2010
