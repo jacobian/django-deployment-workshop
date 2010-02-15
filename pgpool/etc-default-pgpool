@@ -1,0 +1,19 @@
+# Defaults file for pgpool (/etc/default/pgpool)
+#
+# pgpool2's Ubuntu init script doesn't currently create /var/run/postgresql
+# correctly (see https://bugs.launchpad.net/ubuntu/+source/pgpool2/+bug/314837);
+# this works around that bug.
+# 
+# A bit of a hack putting this here, but it gets sourced by /etc/init.d/pgpool2
+# and so saves have to patch that file.
+#
+
+PGPOOL_SYSLOG_FACILITY=local0
+PGPOOL_LOG_DEBUG=0
+PIDFILE=/var/run/pgpool/pgpool.pid
+
+if [ -d /var/run/postgresql ]; then
+    chmod 2775 /var/run/postgresql
+else
+    install -d -m 2775 -o postgres -g postgres /var/run/postgresql
+fi
