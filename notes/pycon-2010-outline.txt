@@ -1,0 +1,57 @@
+* Getting started                                   [1:20 - 1:35]
+    * Introducing our example application.
+    * Running the example app locally.
+    * Overview of where we're going.
+
+* Application server: mod_wsgi                      [1:35 - 1:55]
+    * What's an application server? 
+    * Introducing mod_wsgi
+    * Configuring Apache and mod_wsgi
+    * Demo: deploy the application on a single server under mod_wsgi.
+
+* Database server: PostgreSQL                       [1:55 - 2:15]
+    * Why a separate database server?
+    * Why PostgreSQL?
+    * Basics of configuring PostgreSQL.
+    * Demo: deploy PostgreSQL on a db server.
+    * Demo: wire the Django app up to the separate server.
+
+* Introducing Fabric                                [2:15 - 2:30]
+    * Why automate?
+    * What's Fabric?
+    * Our first fabfile.
+    * Demo: re-deploy with Fabric.
+
+* Multiple web servers                              [2:30 - 2:50]
+    * Why multiple web servers?
+    * "Shared nothing"
+    * Dealing with media.
+    * Demo: deploy w/Fabric onto multiple servers.
+
+[Break 2:50 - 3:10]
+
+* Load balancers                                    [3:10 - 3:40]
+    * Introducing nginx
+    * Using nginx as a reverse proxy
+    * Demo: set up nginx to proxy to multiple machines.
+    * Demo: crash a web server.
+
+* Caching servers                                   [3:40 - 3:55]
+    * Local caching vs. dedicated caching.
+    * Introducing memcached
+    * Using memcached with Django.
+    * Demo: set up memcached; integrate with Django.
+
+* Database connection middleware                    [3:55 - 4:10]
+    * Why connection middleware?
+    * Introducing pgpool.
+    * Using pg_pool and Django.
+    * Demo: switch to pg_pool.
+    
+* Database redundancy                               [4:10 - 4:30]
+    * Redundancy strategies.
+    * Warm standby with pg_standby.
+    * Demo: configure warm standby
+    * Demo: fall over to the slave (time permitting)
+    
+* Next steps.                                       [4:30 - 4:40]
