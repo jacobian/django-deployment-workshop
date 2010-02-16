@@ -7,11 +7,11 @@ This is code and configuration for my Django Deployment Workshop at PyCon 2010
 Here you'll find example config used to set up an example deployment environment
 for a Python WSGI stack, including:
 
-    * A Django site deployed with Fabric_ and Buildout_.
-    * Apache/mod_wsgi_ application servers.
-    * Nginx_ load balancers and media servers.
-    * Memcached_.
-    * PostgreSQL_ with `pg_standby`_
+* A Django site deployed with Fabric_ and Buildout_.
+* Apache/mod_wsgi_ application servers.
+* Nginx_ load balancers and media servers.
+* Memcached_.
+* PostgreSQL_ with `pg_standby`_
 
 .. _fabric: http://fabfile.org/
 .. _buildout: http://buildout.org/
