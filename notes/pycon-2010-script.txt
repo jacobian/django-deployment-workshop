@@ -49,7 +49,7 @@ Pre-fetch the big data file::
 
 Bootstrap up the example app::
 
-    web1$ aptitude -y install git-core postgresql-dev postgresql-client build-essential libpq-dev
+    web1$ aptitude -y install git-core python-dev postgresql-dev postgresql-client build-essential libpq-dev
     web1$ mkdir -p /home/web/static
     web1$ cd /home/web
     web1$ git clone git://github.com/jacobian/django-deployment-workshop.git
@@ -90,7 +90,7 @@ Edit config files pg_hba.conf to include the correct IP addresses, then start::
     db1$ vim postgresql.config
     db1$ invoke-rc.d postgresql-8.4 start
 
-And create users and database. Root user for convienience::
+And create users and database. Root user for convenience::
 
     db1$ sudo -u postgres createuser root
     db1$ createuser fumblerooski
@@ -124,4 +124,22 @@ apache, but 777 is easier)::
     web1$ invoke-rc.d apache2 restart
 
 Hit ``http://<web1>/`` -- *boom*.
+
+4. fabfiles
+===========
+
+Run the fabfile::
+
+    local$  ./bin/fab -f ../fabfiles/single-server.py deploy
+    
+5. Multiple web servers
+=======================
+
+Run the fabfile::
+
+    local$  ./bin/fab -f ../fabfiles/multiple-webs.py setup:hosts=pycon-web2
+    
+While this is running, talk about configuration management.
+
+Hit ``http://<web2>/`` -- *boom*.
 

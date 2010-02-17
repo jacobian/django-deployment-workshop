@@ -1,2 +1,3 @@
 /dump.sql.gz
 /dump.sql
+*.pyc
