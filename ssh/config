@@ -1,0 +1,19 @@
+# Stick this, or something like it, in your ~/.ssh/config. It'll let you refer
+# to servers by short aliases instead of having to remember their IPs. If you've
+# got good bash completetion, it'll even let you tab complete based on name.
+
+Host pycon-web1
+    HostName 174.X.X.X
+    User root
+
+Host pycon-web2
+    HostName 174.X.X.X
+    User root
+
+Host pycon-db1
+    HostName 174.X.X.X
+    User root
+
+Host pycon-db2
+    HostName 174.X.X.X
+    User root
