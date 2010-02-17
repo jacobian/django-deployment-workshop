@@ -1,0 +1,127 @@
+Pre-class
+=========
+
+Just to make sure everything's in place...
+
+Boot the severs::
+
+    local$ cloudservers boot pycon-web1
+    local$ cloudservers boot pycon-web2
+    local$ cloudservers boot pycon-db1
+    local$ cloudservers boot pycon-db2
+    
+~/.ssh/config::
+
+    Host pycon-web1
+        HostName 67.23.41.152
+        User root
+
+    Host pycon-web2
+        HostName 174.143.144.232
+        User root
+
+    Host pycon-db1
+        HostName 174.143.146.239
+        User root
+
+    Host pycon-db2
+        HostName 67.23.41.160
+        User root
+
+Keys::
+
+    local$ ssh-copy-id pycon-web1
+    local$ ssh-copy-id pycon-web2
+    local$ ssh-copy-id pycon-db1
+    local$ ssh-copy-id pycon-db2
+
+Better tab completion::
+
+    <all>$ aptitude -y install bash-completion
+    <all>$ echo ". /etc/bash_completion" >> .bashrc
+
+Pre-fetch the big data file::
+
+    web1$ wget XXXXXX
+
+1. Getting started
+==================
+
+Bootstrap up the example app::
+
+    web1$ aptitude -y install git-core postgresql-dev postgresql-client build-essential libpq-dev
+    web1$ mkdir -p /home/web/static
+    web1$ cd /home/web
+    web1$ git clone git://github.com/jacobian/django-deployment-workshop.git
+    web1$ cd django-deployment-workshop/fumblerooski-site/
+    web1$ python bootstrap.py
+    web1$ ./bin/buildout
+    web1$ ./bin/django runserver 0.0.0.0:8000
+    
+Get ``http://174.143.144.245:8000/`` - operational error. Exactly what I'd expect.
+
+2. PostgreSQL
+=============
+    
+Install Postgres. Fix locale problems (see
+http://cloudservers.rackspacecloud.com/index.php/Ubuntu_-_Repairing_Perl_Locale_Errors
+and http://jacobian.org/writing/pg-encoding-ubuntu/)::
+
+    db1$ aptitude -y install postgresql
+    db1$ aptitude -y install language-pack-en-base
+    db1$ dpkg-reconfigure locales
+    db1$ pg_dropcluster --stop 8.4 main
+    db1$ pg_createcluster --start -e UTF-8 8.4 main
+
+Configure postgres:
+
+    db1$ aptitude -y install git-core
+    db1$ git clone git://github.com/jacobian/django-deployment-workshop.git
+    db1$ cd /etc/postgresql/8.4/main/
+    db1$ invoke-rc.d postgresql-8.4 stop
+    db1$ mv postgresql.conf postgresql.conf.orig
+    db1$ mv pg_hba.conf pg_hba.conf.orig
+    db1$ cp /root/django-deployment-workshop/postgresql/postgresql.conf .
+    db1$ cp /root/django-deployment-workshop/postgresql/pg_hba.conf .
+
+Edit config files pg_hba.conf to include the correct IP addresses, then start::
+
+    db1$ vim pg_hba.conf
+    db1$ vim postgresql.config
+    db1$ invoke-rc.d postgresql-8.4 start
+
+And create users and database. Root user for convienience::
+
+    db1$ sudo -u postgres createuser root
+    db1$ createuser fumblerooski
+    db1$ createdb -O fumblerooski fumblerooski
+
+Wire up the app to PostgreSQL, load data, take a look::
+
+    web1$ cd /home/web/django-deployment-workshop/fumblerooski-site
+    web1$ vim fski/settings.py # DATABASE_HOST = '...'
+    web1$ zcat /root/fumblerooski-dump.sql.gz | ./bin/django dbshell
+    web1$ ./bin/django runserver 0.0.0.0:8000    
+
+Hit ``http://<web1>:8000/`` -- *boom*.
+
+Take questions while the data loads.
+
+3. mod_wsgi
+===========
+
+Install Apache and mod_wsgi, and zap away all the Ubuntu cruft::
+
+    web1$ aptitude install apache2 libapache2-mod-wsgi
+    web1$ cd /etc/apache2/
+    web1$ rm -rf apache2.conf conf.d/ httpd.conf magic mods-* sites-* ports.conf 
+
+Add our config. Remember to make a python eggs dir (it should be writable by
+apache, but 777 is easier)::
+
+    web1$ ln -s /home/web/django-deployment-workshop/apache/apache2.conf .
+    web1$ mkdir -m777 -p /var/www/.python-eggs
+    web1$ invoke-rc.d apache2 restart
+
+Hit ``http://<web1>/`` -- *boom*.
+
