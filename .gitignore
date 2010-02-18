@@ -1,3 +1,4 @@
 /dump.sql.gz
 /dump.sql
 *.pyc
+pip-log.txt

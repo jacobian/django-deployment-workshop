@@ -22,7 +22,7 @@ Boot the severs::
     local$ cloudservers boot pycon-db1
     local$ cloudservers boot pycon-db2
     
-~/.ssh/config::
+``~/.ssh/config``::
 
     Host pycon-web1
         HostName 67.23.41.152
@@ -191,8 +191,8 @@ Check it out, looking at ``X-Handled-By``::
 Install, enable, config memcached::
 
     web1$ aptitude install memcached
-    web1$ echo "ENABLE_MEMCACHED=yes" > /etc/default/memcached 
-    web1$ rm /etc/memcached.conf 
+    web1$ echo "ENABLE_MEMCACHED=yes" > /etc/default/memcached
+    web1$ rm /etc/memcached.conf
     web1$ ln -s /home/web/django-deployment-workshop/memcached/memcached.conf /etc/memcached.conf
 
 Make memcached listen on the internal IP, then start it (and check)::
@@ -213,6 +213,13 @@ Edit ``fski/settings.py`` to point to both cache servers::
         'django.middleware.cache.FetchFromCacheMiddleware',
     )
 
+Remember to do this on both servers.
+
+Reload:
+
+    web1$ invoke-rc.d apache2 reload
+    web2$ invoke-rc.d apache2 reload
+
 Check that it's working.
 
 Check cache stats::
@@ -224,10 +231,10 @@ Check cache stats::
 =================================
 
 Install pgpool2. There's a bug in the current Ubuntu we'll need to work around
-with this ``/etc/default/pgpool2``::
+with a custom ``/etc/default/pgpool2``::
 
     web1$ aptitude install pgpool2
-    web1$ invoke-rc.d pgpool2 stop
+    web1$ pkill pgpool
     web1$ rm /etc/default/pgpool2
     web1$ ln -s /home/web/django-deployment-workshop/pgpool/etc-default-pgpool /etc/default/pgpool2
     web1$ rm /etc/pgpool.conf 
@@ -245,12 +252,17 @@ Modify Django to use pgpool::
 
     DATABASE_HOST = ''
 
+Again, remember both hosts. Reload:
+
+    web1$ invoke-rc.d apache2 reload
+    web2$ invoke-rc.d apache2 reload
+
 Check it out.
 
 9. Database redundancy
 ======================
 
-Set up archiving on the master. Uncomment lines in ``postgresql.conf``::
+Set up archiving on the master; uncomment lines in ``postgresql.conf``::
 
     db1$ aptitude install rsync
     db1$ mkdir /pg_archive
@@ -305,13 +317,13 @@ Copy the public key onto db1::
     db1$ vim .ssh/authorized_keys2
     db1$ chown -R postgres:postgres .ssh/
 
-Test that the passwords-less connection works::
+Test that the passwords-less connection works and that rysnc will work::
 
     db2$ RSYNC_RSH="ssh -i /var/lib/postgresql/.ssh/no-pass" rsync --dry-run postgres@<db1>:/pg_archive/
 
 Create a baseline backup::
 
-    db1$ psql template1 -c "select pg_start_backup('starting backup');"
+    db1$ psql template1 -c "select pg_start_backup('baseline');"
     db1$ cd /
     db1$ tar -cvzf pg-backup.tar.gz /var/lib/postgresql/8.4/main/
     db1$ psql template1 -c "select pg_stop_backup();"
