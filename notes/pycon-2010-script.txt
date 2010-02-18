@@ -78,13 +78,15 @@ Get ``http://pycon-web1:8000/`` - operational error. Exactly what I'd expect.
 Install and configure Postgres.
 
     db1$ aptitude install git-core postgresql
+    db1$ mkdir -p /home/web
+    db1$ cd /home/web
     db1$ git clone git://github.com/jacobian/django-deployment-workshop.git
     db1$ cd /etc/postgresql/8.4/main/
     db1$ invoke-rc.d postgresql-8.4 stop
     db1$ mv postgresql.conf postgresql.conf.orig
     db1$ mv pg_hba.conf pg_hba.conf.orig
-    db1$ cp /root/django-deployment-workshop/postgresql/postgresql.conf .
-    db1$ cp /root/django-deployment-workshop/postgresql/pg_hba.conf .
+    db1$ ln -s /home/web/django-deployment-workshop/postgresql/postgresql.conf .
+    db1$ ln -s /home/web/django-deployment-workshop/postgresql/pg_hba.conf .
 
 Edit config files pg_hba.conf to include the correct IP addresses, then start::
 
@@ -247,4 +249,87 @@ Check it out.
 
 9. Database redundancy
 ======================
+
+Set up archiving on the master. Uncomment lines in ``postgresql.conf``::
+
+    db1$ aptitude install rsync
+    db1$ mkdir /pg_archive
+    db1$ chown postgres:postgres /pg_archive/
+    db1$ vim /etc/postgresql/8.4/main/postgresql.conf
+    db1$ invoke-rc.d postgresql-8.4 restart
+    db1$ ls /pg_archive/
+    db1$ psql template1 -c "select pg_switch_xlog();"
+    db1$ ls /pg_archive/
+
+Set up Postgres on the slave, making sure it's off while we complete the setup::
+
+    db2$ aptitude install git-core postgresql-client postgresql-contrib 
+    db2$ invoke-rc.d postgresql-8.4 stop
+    db2$ mkdir -p /home/web
+    db2$ cd /home/web/
+    db2$ git clone git://github.com/jacobian/django-deployment-workshop.git
+    db2$ cd /etc/postgresql/8.4/main/
+    db2$ mv postgresql.conf postgresql.conf.orig
+    db2$ mv pg_hba.conf pg_hba.conf.orig
+    db2$ ln -s /home/web/django-deployment-workshop/postgresql/postgresql.conf .
+    db2$ ln -s /home/web/django-deployment-workshop/postgresql/pg_hba.conf .
+
+Remember to fix IPs::
+
+    db2$ vim /etc/postgresq/8.4/main/postgresql.conf
+    db2$ vim /etc/postgresq/8.4/main/pg_hba.conf
+
+Set up ``pg_standby``::
+
+    db2$ aptitude install rsync
+    db2$ ln -s /usr/lib/postgresql/8.4/bin/pg_standby /usr/local/bin/pg_standby
+    db2$ mkdir /pg_archive 
+    db2$ chown postgres:postgres /pg_archive
+    db2$ cd /var/lib/postgresql/8.4/main/
+    db2$ ln -s /home/web/django-deployment-workshop/postgresql/recovery.conf .
+    db2$ chown postgres:postgres recovery.conf
+    
+Set up a keypair::
+
+    db2$ cd /var/lib/postgresql 
+    db2$ mkdir .ssh 
+    db2$ ssh-keygen -t dsa 
+            --> /var/lib/postgresql/.ssh/no-pass
+    db2$ chown -R postgres:postgres /var/lib/postgresql/.ssh 
+    db2$ cat /var/lib/postgresql/.ssh/no-pass.pub
+
+Copy the public key onto db1::
+
+    db1$ cd /var/lib/postgresql/
+    db1$ mkdir .ssh
+    db1$ vim .ssh/authorized_keys2
+    db1$ chown -R postgres:postgres .ssh/
+
+Test that the passwords-less connection works::
+
+    db2$ RSYNC_RSH="ssh -i /var/lib/postgresql/.ssh/no-pass" rsync --dry-run postgres@<db1>:/pg_archive/
+
+Create a baseline backup::
+
+    db1$ psql template1 -c "select pg_start_backup('starting backup');"
+    db1$ cd /
+    db1$ tar -cvzf pg-backup.tar.gz /var/lib/postgresql/8.4/main/
+    db1$ psql template1 -c "select pg_stop_backup();"
+
+Transfer the backup from the primary to the backup::
+
+    db2$ cd /
+    db2$ scp -i /var/lib/postgresql/.ssh/no-pass postgres@<db1>:/pg-backup.tar.gz .
+    db2$ tar -xvzf pg-backup.tar.gz
+
+Copy over the WAL files::
+
+    db2$ RSYNC_RSH="ssh -i /var/lib/postgresql/.ssh/no-pass" rsync -arv --remove-source-files postgres@<db1>:/pg_archive/* /pg_archive/
+
+In real life, the above would be a cron job.
+
+Start PostgreSQL and verify it is in recovery mode::
+
+    db2$ invoke-rc.d postgresql-8.4 start
+    db2$ tail -f /var/log/postgresql/standby.log
 
