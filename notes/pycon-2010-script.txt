@@ -333,3 +333,14 @@ Start PostgreSQL and verify it is in recovery mode::
     db2$ invoke-rc.d postgresql-8.4 start
     db2$ tail -f /var/log/postgresql/standby.log
 
+Afterwards
+==========
+
+Stop the VMs::
+
+    local$ cloudservers delete pycon-web1
+    local$ cloudservers delete pycon-web2
+    local$ cloudservers delete pycon-db1
+    local$ cloudservers delete pycon-db2
+    
+Clean up ``/etc/hosts`` and ``~/.ssh/config``.
