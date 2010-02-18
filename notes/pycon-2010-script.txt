@@ -1,3 +1,15 @@
+=================
+PyCon 2010 script
+=================
+
+This is my "working script" -- I'll be using these commands, verbatim, as I
+walk through the class. They probably only work on Ubuntu 9.10.
+
+These notes are primarily for me only, so they may not make a whole lot of
+sense without my narrative. However, for those not in the class, judicious use
+of ``man`` and Google along with experimentation should make for an
+interesting afternoon.
+
 Pre-class
 =========
 
@@ -219,7 +231,7 @@ with this ``/etc/default/pgpool2``::
     web1$ rm /etc/pgpool.conf 
     web1$ ln -s /home/web/django-deployment-workshop/pgpool/pgpool-single-db.conf /etc/pgpool.conf
 
-Fix up ``pgpool.conf`` to point to the backend (``db1``). Start it and check.
+Fix up ``pgpool.conf`` to point to the backend (``db1``). Start it and check::
 
     web1$ vim /etc/pgpool.conf 
     web1$ invoke-rc.d pgpool2 start
