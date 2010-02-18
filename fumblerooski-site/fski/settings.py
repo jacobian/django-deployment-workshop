@@ -20,7 +20,7 @@ BUILDOUT_ROOT = ROOT.parent
 
 MEDIA_ROOT = ROOT.child('media')
 MEDIA_URL = '/m/'
-ADMIN_MEDIA_PREFIX = '/admin_media/'
+ADMIN_MEDIA_PREFIX = 'http://media.jacobian.org/admin/'
 
 SECRET_KEY = 'd8i0we+qjkwf*xt&fxl^$)x1pa-c%=$ib(^vrcy2z3y8!w_sua'
 USE_I18N = False
