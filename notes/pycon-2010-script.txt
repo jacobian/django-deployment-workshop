@@ -58,7 +58,7 @@ Bootstrap up the example app::
     web1$ ./bin/buildout
     web1$ ./bin/django runserver 0.0.0.0:8000
     
-Get ``http://174.143.144.245:8000/`` - operational error. Exactly what I'd expect.
+Get ``http://pycon-web1:8000/`` - operational error. Exactly what I'd expect.
 
 2. PostgreSQL
 =============
@@ -103,7 +103,7 @@ Wire up the app to PostgreSQL, load data, take a look::
     web1$ zcat /root/fumblerooski-dump.sql.gz | ./bin/django dbshell
     web1$ ./bin/django runserver 0.0.0.0:8000    
 
-Hit ``http://<web1>:8000/`` -- *boom*.
+Hit ``http://pycon-web1:8000/`` -- *boom*.
 
 Take questions while the data loads.
 
@@ -123,7 +123,7 @@ apache, but 777 is easier)::
     web1$ mkdir -m777 -p /var/www/.python-eggs
     web1$ invoke-rc.d apache2 restart
 
-Hit ``http://<web1>/`` -- *boom*.
+Hit ``http://pycon-web1/`` -- *boom*.
 
 4. fabfiles
 ===========
@@ -141,5 +141,51 @@ Run the fabfile::
     
 While this is running, talk about configuration management.
 
-Hit ``http://<web2>/`` -- *boom*.
+Hit ``http://pycon-web2/`` -- *boom*.
 
+6. Load balancers
+=================
+
+Set up Nginx on web1::
+
+    web1$ aptitude install nginx 
+    web1$ cd /etc/nginx/
+    web1$ rm -rf conf.d/ fastcgi_params koi-* nginx.conf sites-* win-utf 
+    web1$ ln -s /home/web/django-deployment-workshop/nginx/nginx.conf .
+
+Edit Apache conf to listen on local IP, port 8000::
+
+    web1$ vim /etc/apache2/apache2.conf
+    web1$ invoke-rc.d apache2 restart
+
+Edit Nginx to point to correct backend - just web1 for now::
+
+    web1$ vim /etc/nginx/nginx.conf 
+    web1$ invoke-rc.d nginx start
+
+Check it out::
+
+    local$ curl -I http://pycon-web1/
+
+Edit Apache on web2 for local IP, port 8000::
+
+    web2$ vim /etc/apache2/apache2.conf 
+    web2$ invoke-rc.d apache2 restart
+
+Edit Nginx to point to both backends::
+
+    web1$ vim /etc/nginx/nginx.conf 
+    web1$ invoke-rc.d nginx restart
+
+Check it out, looking at ``X-Handled-By``::
+    
+    local$ curl -I http://pycon-web1/
+
+7. Caching servers
+==================
+
+8. Database connection middleware
+=================================
+
+9. Database redundancy
+======================

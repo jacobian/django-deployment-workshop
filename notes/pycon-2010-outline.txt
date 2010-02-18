@@ -48,10 +48,10 @@
     * Using pg_pool and Django.
     * Demo: switch to pg_pool.
     
-10. Database redundancy                               [4:10 - 4:30]
+9. Database redundancy                               [4:10 - 4:30]
     * Redundancy strategies.
     * Warm standby with pg_standby.
     * Demo: configure warm standby
     * Demo: fall over to the slave (time permitting)
     
-11. Next steps.                                       [4:30 - 4:40]
+10. Next steps.                                       [4:30 - 4:40]
