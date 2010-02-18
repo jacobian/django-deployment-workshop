@@ -69,9 +69,14 @@ def buildout():
 def reload():
     "Reload Apache to pick up new code changes."
     run("invoke-rc.d apache2 reload")
-    
+
+def flush_cache():
+    "Flush memcached."
+    run("invoke-rc.d memcached restart")
+
 def deploy():
     "Full deploy: push, buildout, and reload."
     push()
     buildout()
     reload()
+    flush_cache()

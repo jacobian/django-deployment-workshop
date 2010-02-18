@@ -37,7 +37,7 @@ Keys::
 
 Better tab completion::
 
-    <all>$ aptitude -y install bash-completion
+    <all>$ aptitude install bash-completion
     <all>$ echo ". /etc/bash_completion" >> .bashrc
 
 Pre-fetch the big data file::
@@ -49,7 +49,7 @@ Pre-fetch the big data file::
 
 Bootstrap up the example app::
 
-    web1$ aptitude -y install git-core python-dev postgresql-dev postgresql-client build-essential libpq-dev
+    web1$ aptitude install git-core python-dev postgresql-dev postgresql-client build-essential libpq-dev
     web1$ mkdir -p /home/web/static
     web1$ cd /home/web
     web1$ git clone git://github.com/jacobian/django-deployment-workshop.git
@@ -63,19 +63,9 @@ Get ``http://pycon-web1:8000/`` - operational error. Exactly what I'd expect.
 2. PostgreSQL
 =============
     
-Install Postgres. Fix locale problems (see
-http://cloudservers.rackspacecloud.com/index.php/Ubuntu_-_Repairing_Perl_Locale_Errors
-and http://jacobian.org/writing/pg-encoding-ubuntu/)::
+Install and configure Postgres.
 
-    db1$ aptitude -y install postgresql
-    db1$ aptitude -y install language-pack-en-base
-    db1$ dpkg-reconfigure locales
-    db1$ pg_dropcluster --stop 8.4 main
-    db1$ pg_createcluster --start -e UTF-8 8.4 main
-
-Configure postgres:
-
-    db1$ aptitude -y install git-core
+    db1$ aptitude install git-core postgresql
     db1$ git clone git://github.com/jacobian/django-deployment-workshop.git
     db1$ cd /etc/postgresql/8.4/main/
     db1$ invoke-rc.d postgresql-8.4 stop
@@ -184,8 +174,65 @@ Check it out, looking at ``X-Handled-By``::
 7. Caching servers
 ==================
 
+Install, enable, config memcached::
+
+    web1$ aptitude install memcached
+    web1$ echo "ENABLE_MEMCACHED=yes" > /etc/default/memcached 
+    web1$ rm /etc/memcached.conf 
+    web1$ ln -s /home/web/django-deployment-workshop/memcached/memcached.conf /etc/memcached.conf
+
+Make memcached listen on the internal IP, then start it (and check)::
+
+    web1$ vim /etc/memcached.conf 
+    web1$ invoke-rc.d memcached start
+    web1$ echo stats | nc -q1 <internal-ip> 11211
+
+Repeat on web2.
+
+Edit ``fski/settings.py`` to point to both cache servers::
+
+    CACHE_BACKEND = "memcached://<web1>:11211;<web2>:11211/"
+    
+    MIDDLEWARE_CLASSES = (
+        'django.middleware.cache.UpdateCacheMiddleware',
+        ...
+        'django.middleware.cache.FetchFromCacheMiddleware',
+    )
+
+Check that it's working.
+
+Check cache stats::
+
+    web1$ echo stats | nc -q1 <web1> 11211
+    web1$ echo stats | nc -q1 <web2> 11211
+
 8. Database connection middleware
 =================================
 
+Install pgpool2. There's a bug in the current Ubuntu we'll need to work around
+with this ``/etc/default/pgpool2``::
+
+    web1$ aptitude install pgpool2
+    web1$ invoke-rc.d pgpool2 stop
+    web1$ rm /etc/default/pgpool2
+    web1$ ln -s /home/web/django-deployment-workshop/pgpool/etc-default-pgpool /etc/default/pgpool2
+    web1$ rm /etc/pgpool.conf 
+    web1$ ln -s /home/web/django-deployment-workshop/pgpool/pgpool-single-db.conf /etc/pgpool.conf
+
+Fix up ``pgpool.conf`` to point to the backend (``db1``). Start it and check.
+
+    web1$ vim /etc/pgpool.conf 
+    web1$ invoke-rc.d pgpool2 start
+    web1$ psql -l
+
+Repeat on ``web2``.
+
+Modify Django to use pgpool::
+
+    DATABASE_HOST = ''
+
+Check it out.
+
 9. Database redundancy
 ======================
+

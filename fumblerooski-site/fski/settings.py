@@ -25,12 +25,18 @@ ADMIN_MEDIA_PREFIX = '/admin_media/'
 SECRET_KEY = 'd8i0we+qjkwf*xt&fxl^$)x1pa-c%=$ib(^vrcy2z3y8!w_sua'
 USE_I18N = False
 
+# Umcomment this and the middleware below to enable caching.
+# Replace the IPs with the internal IPs of the machines running memcached.
+# CACHE_BACKEND = 'memcached://10.X.X.X:11211;10.X.X.X:11211/'
+
 MIDDLEWARE_CLASSES = (
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'fumblerooski.urls'
