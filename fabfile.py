@@ -21,7 +21,7 @@ def bootem():
     flavor = CS.flavors.find(ram=256)
     image = CS.images.find(name="Ubuntu 9.10 (karmic)")
     for name in env.hosts:
-        server = CS.servers.boot(name, flavor=flavor, image=image)
+        server = CS.servers.create(name, flavor=flavor, image=image)
         servers.append(server)
         print "%s: ips: %s/%s pass: %s" % (name, server.public_ip, server.private_ip, server.adminPass)
 
