@@ -21,7 +21,7 @@ def setup():
     "Set up and bootstrap a new web server."
     
     # Install needed packages
-    run('aptitude -y install git-core python-dev postgresql-dev postgresql-client build-essential libpq-dev apache2 libapache2-mod-wsgi')
+    run('aptitude -y install subversion git-core python-dev postgresql-dev postgresql-client build-essential libpq-dev apache2 libapache2-mod-wsgi')
 
     # Make the code directories, and go get the code
     run('mkdir -p %s' % os.path.join(env.web_root, "static"))
@@ -53,9 +53,6 @@ def setup():
     # Done - where! Now restart Apache.
     run('invoke-rc.d apache2 restart')
 
-def trysed():
-    dbip = '10.177.58.115'
-
 def push():
     "Push out new code to the server."
     with cd(env.code_root):
@@ -69,6 +66,10 @@ def buildout():
 def reload():
     "Reload Apache to pick up new code changes."
     run("invoke-rc.d apache2 reload")
+
+def restart_apache():
+    "Restart Apache."
+    run("invoke-rc.d apache2 restart")
 
 def flush_cache():
     "Flush memcached."

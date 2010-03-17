@@ -37,3 +37,5 @@ def setup():
 def killem():
     for name in env.hosts:
         CS.servers.find(name=name).delete()
+
+del Path

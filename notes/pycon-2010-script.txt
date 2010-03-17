@@ -61,7 +61,7 @@ Pre-fetch the big data file::
 
 Bootstrap up the example app::
 
-    web1$ aptitude install git-core python-dev postgresql-dev postgresql-client build-essential libpq-dev
+    web1$ aptitude install git-core python-dev postgresql-dev postgresql-client build-essential libpq-dev subversion
     web1$ mkdir -p /home/web/static
     web1$ cd /home/web
     web1$ git clone git://github.com/jacobian/django-deployment-workshop.git
@@ -91,7 +91,7 @@ Install and configure Postgres.
 Edit config files pg_hba.conf to include the correct IP addresses, then start::
 
     db1$ vim pg_hba.conf
-    db1$ vim postgresql.config
+    db1$ vim postgresql.conf
     db1$ invoke-rc.d postgresql-8.4 start
 
 And create users and database. Root user for convenience::
@@ -338,7 +338,10 @@ Copy over the WAL files::
 
     db2$ RSYNC_RSH="ssh -i /var/lib/postgresql/.ssh/no-pass" rsync -arv --remove-source-files postgres@<db1>:/pg_archive/* /pg_archive/
 
-In real life, the above would be a cron job.
+In real life, the above would be a cron job::
+
+    RSYNC_RSH="ssh -i /var/lib/postgresql/.ssh/no-pass"
+    */5 * * * * rsync -arv --remove-source-files postgres@<db1>:/pg_archive/* /pg_archive/
 
 Start PostgreSQL and verify it is in recovery mode::
 
