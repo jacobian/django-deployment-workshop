@@ -19,7 +19,7 @@ env.user = 'root'
 def bootem():
     servers = []
     flavor = CS.flavors.find(ram=256)
-    image = CS.images.find(name="Ubuntu 9.10 (karmic)")
+    image = CS.images.find(name="Ubuntu 10.04 LTS (lucid)")
     for name in env.hosts:
         server = CS.servers.create(name, flavor=flavor, image=image)
         servers.append(server)

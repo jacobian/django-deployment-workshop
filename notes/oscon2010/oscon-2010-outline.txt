@@ -1,0 +1,51 @@
+1. Getting started                                   [XXX]
+    * Introducing our example application.
+    * Overview of where we're going.
+    * Demo: bootstrap the example app on web1.
+
+2. Database server: PostgreSQL                       [XXX]
+    * Why a separate database server?
+    * Why PostgreSQL?
+    * Basics of configuring PostgreSQL.
+    * Demo: deploy PostgreSQL on a db server.
+    * Demo: wire the Django app up to the separate server.
+
+3. Application server: mod_wsgi                      [XXX]
+    * What's an application server? 
+    * Introducing mod_wsgi
+    * Configuring Apache and mod_wsgi
+    * Demo: deploy the application on a single server under mod_wsgi.
+
+4. Introducing Fabric                                [XXX]
+    * Why automate?
+    * What's Fabric?
+    * Our first fabfile.
+    * Demo: re-deploy with Fabric.
+
+5. Multiple web servers                              [XXX]
+    * Why multiple web servers?
+    * "Shared nothing"
+    * Dealing with media.
+    * Demo: deploy w/Fabric onto multiple servers.
+
+[Break XXX]
+
+6. Load balancers                                    [XXX]
+    * Introducing nginx
+    * Using nginx as a reverse proxy
+    * Demo: set up nginx to proxy to multiple machines.
+    * Demo: crash a web server.
+
+7. Caching servers                                   [XXX]
+    * Local caching vs. dedicated caching.
+    * Introducing memcached
+    * Using memcached with Django.
+    * Demo: set up memcached; integrate with Django.
+
+8. Database connection middleware                    [XXX]
+    * Why connection middleware?
+    * Introducing pgpool.
+    * Using pg_pool and Django.
+    * Demo: switch to pg_pool.
+        
+9.  What's next?                                     [XXX]

@@ -1,0 +1,27 @@
+Changes
+=======
+
+The deployment world changes quickly, and I'm trying to keep these 
+examples up-to-date with recent changes. To that end, I'll explain
+here all the changes I make as I update the tutorial.
+
+July 2010 (OSCON)
+-----------------
+
+* Updated to Ubuntu 10.04 LTS.
+
+  Whenever possible, I prefer to deploy against Ubuntu's LTS (long-term
+  support) releases. However, when I originally wrote this tutorial (Feb
+  2010) the previous LTS was exceedingly long in the tooth and missing most
+  of the modern Python kit.
+  
+  Now that 10.04 is out along with all the modern Python goodness it'll
+  probably remain my preferred server OS for a couple-three years.
+  
+* Dropped the database replication example.
+
+  PostgreSQL 9.0 ships soon, and will radically change PostgreSQL's
+  replication/clustering story. Also, in previous classes this was the
+  least "interesting" part according to attendees. So, it's been dropped so
+  that I can spend more time on the other parts. Instead, I'll cover
+  replication as part of the "what's next" roundup at the end.
