@@ -1,51 +1,61 @@
-1. Getting started                                   [XXX]
+1. Getting started                                   [Jacob - 1:30-2:00 (:30)]
     * Introducing our example application.
     * Overview of where we're going.
     * Demo: bootstrap the example app on web1.
 
-2. Database server: PostgreSQL                       [XXX]
+2. Database server: PostgreSQL                       [Frank - 2:00-2:20 (:20)]
     * Why a separate database server?
+    * Database server options
     * Why PostgreSQL?
     * Basics of configuring PostgreSQL.
     * Demo: deploy PostgreSQL on a db server.
     * Demo: wire the Django app up to the separate server.
 
-3. Application server: mod_wsgi                      [XXX]
+3. Application server: mod_wsgi                      [Frank - 2:20-2:40 (:20)]
     * What's an application server? 
+    * Application server options
     * Introducing mod_wsgi
     * Configuring Apache and mod_wsgi
     * Demo: deploy the application on a single server under mod_wsgi.
 
-4. Introducing Fabric                                [XXX]
+4. Deployment automation                            [Jacob - 2:40-3:00 (:20)]
     * Why automate?
+    * Deployment automation vs. configuration management
+    * Automation/CFM tools
     * What's Fabric?
     * Our first fabfile.
     * Demo: re-deploy with Fabric.
 
-5. Multiple web servers                              [XXX]
+[Break 3:00-3:30 -- XXX is this the actual break time?]
+
+5. Multiple web servers                              [Jacob - 3:30-3:45 (:15)]
     * Why multiple web servers?
     * "Shared nothing"
     * Dealing with media.
     * Demo: deploy w/Fabric onto multiple servers.
 
-[Break XXX]
-
-6. Load balancers                                    [XXX]
+6. Load balancers                                    [Frank - 3:45-4:05 (:20)]
+    * Load balancer options
     * Introducing nginx
     * Using nginx as a reverse proxy
     * Demo: set up nginx to proxy to multiple machines.
     * Demo: crash a web server.
 
-7. Caching servers                                   [XXX]
+7. Caching servers                                   [Frank - 4:05-4:20 (:15)]
     * Local caching vs. dedicated caching.
     * Introducing memcached
     * Using memcached with Django.
     * Demo: set up memcached; integrate with Django.
+    * Other types of caching
 
-8. Database connection middleware                    [XXX]
+8. Database connection middleware                    [Jacob - 4:20-4:40 (:20)]
     * Why connection middleware?
+    * Connection middleware options
     * Introducing pgpool.
     * Using pg_pool and Django.
     * Demo: switch to pg_pool.
         
-9.  What's next?                                     [XXX]
+9.  What's next?                                     [Jacob - 4:40-5:00 (:20)]
+    * Monitoring
+    * Other data storage: search engines, queues, NoSQL, ...
+    * Scaling up and out
