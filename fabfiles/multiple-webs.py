@@ -11,7 +11,7 @@ import os
 from fabric.api import *
 from fabric.contrib import files
 
-env.hosts = ['pycon-web1', 'pycon-web2']
+env.hosts = ['oscon-web1', 'oscon-web2']
 env.user = 'root'
 env.web_root = "/home/web"
 env.code_root = os.path.join(env.web_root, "django-deployment-workshop")
@@ -21,7 +21,7 @@ def setup():
     "Set up and bootstrap a new web server."
     
     # Install needed packages
-    run('aptitude -y install subversion git-core python-dev postgresql-dev postgresql-client build-essential libpq-dev apache2 libapache2-mod-wsgi')
+    run('aptitude -y install subversion git-core python-dev postgresql-client build-essential libpq-dev apache2 libapache2-mod-wsgi')
 
     # Make the code directories, and go get the code
     run('mkdir -p %s' % os.path.join(env.web_root, "static"))

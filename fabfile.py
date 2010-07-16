@@ -13,10 +13,10 @@ from unipath import FSPath as Path
 CS = cloudservers.CloudServers(os.environ['CLOUD_SERVERS_USERNAME'],
                                os.environ['CLOUD_SERVERS_API_KEY'])
 
-env.hosts = ['pycon-web1', 'pycon-web2', 'pycon-db1', 'pycon-db2']
+env.hosts = ['oscon-web1', 'oscon-web2', 'oscon-db1']
 env.user = 'root'
 
-def bootem():
+def bootem():    
     servers = []
     flavor = CS.flavors.find(ram=256)
     image = CS.images.find(name="Ubuntu 10.04 LTS (lucid)")
@@ -28,11 +28,11 @@ def bootem():
 def copyid():
     for name in env.hosts:
         local('ssh-copy-id %s' % name)
-        
+
 def setup():
-    with hide('stdout', 'stderr'):
-        run('aptitude -y install bash-completion')
-        run('echo ". /etc/bash_completion" >> .bashrc')
+    run('aptitude update && aptitude -y safe-upgrade')
+    run('aptitude -y install bash-completion language-pack-en')
+    run('echo ". /etc/bash_completion" >> .bashrc')
 
 def killem():
     for name in env.hosts:

@@ -17,9 +17,9 @@ Just to make sure everything's in place...
 
 Boot the severs::
 
-    local$ cloudservers boot oscon-web1
-    local$ cloudservers boot oscon-web2
-    local$ cloudservers boot oscon-db1
+    local$ cloudservers boot oscon-web1 --key
+    local$ cloudservers boot oscon-web2 --key
+    local$ cloudservers boot oscon-db1 --key
     
 ``~/.ssh/config``::
 
@@ -40,11 +40,6 @@ Keys::
     local$ ssh-copy-id oscon-web2
     local$ ssh-copy-id oscon-db1
 
-Better tab completion::
-
-    <all>$ aptitude install bash-completion
-    <all>$ echo ". /etc/bash_completion" >> .bashrc
-
 Pre-fetch the big data file::
 
     web1$ wget XXXXXX
@@ -52,9 +47,13 @@ Pre-fetch the big data file::
 1. Getting started
 ==================
 
+Initial setup::
+
+    <all>$ aptitude update && aptitude -y safe-upgrade
+
 Bootstrap up the example app::
 
-    web1$ aptitude install git-core python-dev postgresql-dev postgresql-client build-essential libpq-dev subversion
+    web1$ aptitude install git-core python-dev postgresql-client build-essential libpq-dev subversion
     web1$ mkdir -p /home/web/static
     web1$ cd /home/web
     web1$ git clone git://github.com/jacobian/django-deployment-workshop.git
@@ -68,7 +67,7 @@ Get ``http://oscon-web1:8000/`` - operational error. Exactly what I'd expect.
 2. PostgreSQL
 =============
     
-Install and configure Postgres.
+Install and configure Postgres::
 
     db1$ aptitude install git-core postgresql
     db1$ mkdir -p /home/web
@@ -81,7 +80,8 @@ Install and configure Postgres.
     db1$ ln -s /home/web/django-deployment-workshop/postgresql/postgresql.conf .
     db1$ ln -s /home/web/django-deployment-workshop/postgresql/pg_hba.conf .
 
-Edit config files pg_hba.conf to include the correct IP addresses, then start::
+Edit config files (``postrgesql.conf``, ``pg_hba.conf``) to include the
+correct IP addresses, then start::
 
     db1$ vim pg_hba.conf
     db1$ vim postgresql.conf
@@ -98,7 +98,9 @@ Wire up the app to PostgreSQL, load data, take a look::
     web1$ cd /home/web/django-deployment-workshop/fumblerooski-site
     web1$ vim fski/settings.py # DATABASE_HOST = '...'
     web1$ zcat /root/fumblerooski-dump.sql.gz | ./bin/django dbshell
-    web1$ ./bin/django runserver 0.0.0.0:8000    
+    web1$ ./bin/django runserver 0.0.0.0:8000
+
+Instead of installing the DB, can also ``./bin/django syncdb``.
 
 Hit ``http://oscon-web1:8000/`` -- *boom*.
 
