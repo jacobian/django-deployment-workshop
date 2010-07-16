@@ -1,8 +1,8 @@
 Django Deployment Workshop
 ==========================
 
-This is code and configuration for my Django Deployment Workshop at PyCon 2010
-(and beyond).
+This is code and configuration for my Django Deployment Workshop at PyCon
+2010, OSCON 2010, and beyond.
 
 Here you'll find example config used to set up an example deployment environment
 for a Python WSGI stack, including:
@@ -71,7 +71,7 @@ What's next
 ===========
 
 After than, start deploying. My notes, the ones I use when I teach the class,
-are available here. If you're not using Ubuntu 9.10 then YMMV.
+are available here. If you're not using Ubuntu 10.04 LTS then YMMV.
 
 Further reading
 ===============
