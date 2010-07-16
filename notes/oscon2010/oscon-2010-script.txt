@@ -129,14 +129,14 @@ Hit ``http://oscon-web1/`` -- *boom*.
 
 Run the fabfile::
 
-    local$  ./bin/fab -f ../fabfiles/single-server.py deploy
+    local$  fab -f fabfiles/single-server.py deploy
     
 5. Multiple web servers
 =======================
 
 Run the fabfile::
 
-    local$  ./bin/fab -f ../fabfiles/multiple-webs.py setup:hosts=oscon-web2
+    local$  fab -f fabfiles/multiple-webs.py setup:hosts=oscon-web2
     
 While this is running, talk about configuration management.
 
@@ -186,14 +186,13 @@ Check it out, looking at ``X-Handled-By``::
 Install, enable, config memcached::
 
     web1$ aptitude install memcached
-    web1$ echo "ENABLE_MEMCACHED=yes" > /etc/default/memcached
     web1$ rm /etc/memcached.conf
     web1$ ln -s /home/web/django-deployment-workshop/memcached/memcached.conf /etc/memcached.conf
 
 Make memcached listen on the internal IP, then start it (and check)::
 
     web1$ vim /etc/memcached.conf 
-    web1$ invoke-rc.d memcached start
+    web1$ invoke-rc.d memcached restart
     web1$ echo stats | nc -q1 <internal-ip> 11211
 
 Repeat on web2.
