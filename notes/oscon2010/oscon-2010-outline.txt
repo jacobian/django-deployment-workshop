@@ -41,20 +41,20 @@
     * Demo: set up nginx to proxy to multiple machines.
     * Demo: crash a web server.
 
-7. Caching servers                                   [Frank - 4:05-4:20 (:15)]
+8. Database connection middleware                    [Jacob - 4:05-4:25 (:20)]
+    * Why connection middleware?
+    * Connection middleware options
+    * Introducing pgpool.
+    * Using pg_pool and Django.
+    * Demo: switch to pg_pool.
+
+7. Caching servers                                   [Frank - 4:25-4:40 (:15)]
     * Local caching vs. dedicated caching.
     * Introducing memcached
     * Using memcached with Django.
     * Demo: set up memcached; integrate with Django.
     * Other types of caching
 
-8. Database connection middleware                    [Jacob - 4:20-4:40 (:20)]
-    * Why connection middleware?
-    * Connection middleware options
-    * Introducing pgpool.
-    * Using pg_pool and Django.
-    * Demo: switch to pg_pool.
-        
 9.  What's next?                                     [Jacob - 4:40-5:00 (:20)]
     * Monitoring
     * Other data storage: search engines, queues, NoSQL, ...
