@@ -180,7 +180,39 @@ Check it out, looking at ``X-Handled-By``::
     
     local$ curl -I http://oscon-web1/
 
-7. Caching servers
+8. Database connection middleware
+=================================
+
+Install pgpool2. There's a bug in the current Ubuntu we'll need to work around
+with a custom ``/etc/default/pgpool2``::
+
+    web1$ aptitude install pgpool2
+    web1$ pkill pgpool
+    web1$ rm /etc/default/pgpool2
+    web1$ ln -s /home/web/django-deployment-workshop/pgpool/etc-default-pgpool /etc/default/pgpool2
+    web1$ rm /etc/pgpool.conf 
+    web1$ ln -s /home/web/django-deployment-workshop/pgpool/pgpool-single-db.conf /etc/pgpool.conf
+
+Fix up ``pgpool.conf`` to point to the backend (``db1``). Start it and check::
+
+    web1$ vim /etc/pgpool.conf 
+    web1$ invoke-rc.d pgpool2 start
+    web1$ psql -l
+
+Repeat on ``web2``.
+
+Modify Django to use pgpool::
+
+    DATABASE_HOST = ''
+
+Again, remember both hosts. Reload:
+
+    web1$ invoke-rc.d apache2 reload
+    web2$ invoke-rc.d apache2 reload
+
+Check it out.
+
+8. Caching servers
 ==================
 
 Install, enable, config memcached::
@@ -220,38 +252,6 @@ Check cache stats::
 
     web1$ echo stats | nc -q1 <web1> 11211
     web1$ echo stats | nc -q1 <web2> 11211
-
-8. Database connection middleware
-=================================
-
-Install pgpool2. There's a bug in the current Ubuntu we'll need to work around
-with a custom ``/etc/default/pgpool2``::
-
-    web1$ aptitude install pgpool2
-    web1$ pkill pgpool
-    web1$ rm /etc/default/pgpool2
-    web1$ ln -s /home/web/django-deployment-workshop/pgpool/etc-default-pgpool /etc/default/pgpool2
-    web1$ rm /etc/pgpool.conf 
-    web1$ ln -s /home/web/django-deployment-workshop/pgpool/pgpool-single-db.conf /etc/pgpool.conf
-
-Fix up ``pgpool.conf`` to point to the backend (``db1``). Start it and check::
-
-    web1$ vim /etc/pgpool.conf 
-    web1$ invoke-rc.d pgpool2 start
-    web1$ psql -l
-
-Repeat on ``web2``.
-
-Modify Django to use pgpool::
-
-    DATABASE_HOST = ''
-
-Again, remember both hosts. Reload:
-
-    web1$ invoke-rc.d apache2 reload
-    web2$ invoke-rc.d apache2 reload
-
-Check it out.
 
 Afterwards
 ==========
