@@ -15,7 +15,7 @@ from __future__ import with_statement
 import os
 from fabric.api import *
 
-# I have entres in /etc/hosts which make these names work. 
+# I have entries in /etc/hosts which make these names work. 
 # If I didn't, I'd just use IP addresses.
 env.hosts = ['oscon-web1']
 env.user = 'root'
