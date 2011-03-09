@@ -5,6 +5,35 @@ The deployment world changes quickly, and I'm trying to keep these
 examples up-to-date with recent changes. To that end, I'll explain
 here all the changes I make as I update the tutorial.
 
+March 2011 (PyCon)
+------------------
+
+A pretty major re-work based on experience doing this class over the last
+year. The outline's different, and a few of the technologies themselves have
+changed/improved. There's more of a focus on the web servers themselves (as
+oposed to database servers and such) and more expository material (as opposed
+to demos). The big changes are:
+
+* Switched from Fumblerooski to Mingus as the example application. The need
+  for a data file to go with Fumblerooski and the additional overhead of the
+  needed Buildout config makes this a bit too much.
+  
+* Because of the above switch, I've dropped Buildout in favor of
+  virtualenv/pip.
+  
+* Added coverage of Gunicorn, though there's no config because Gunicorn's just
+  that easy.
+
+* Memcached and Pgpool get much briefer references, though I've kept the
+  configs around for those who want to see 'em.
+ 
+* Added some very basic Chef/Puppet coverage as well as an example Chef config
+  for the mini-cluster built in the example. I don't yet have the equivalent
+  Puppet setup because I'm a few years out of date in my Puppet knowledge. I'd
+  appreciate it if someone could contribute an equivalent to contrast/compare.
+
+* Added Vagrant config for using local VMs.
+
 July 2010 (OSCON)
 -----------------
 
@@ -25,3 +54,4 @@ July 2010 (OSCON)
   least "interesting" part according to attendees. So, it's been dropped so
   that I can spend more time on the other parts. Instead, I'll cover
   replication as part of the "what's next" roundup at the end.
+  

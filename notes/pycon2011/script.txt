@@ -1,0 +1,55 @@
+1. Getting started                                      [9:00 - 9:30]
+    * The big picture.
+    * Overview of where we're going.
+    * Introducing Mingus.
+    * Demo: bootstrap the example app on web1.
+
+2. Database server: PostgreSQL                          [9:30 - 9:50]
+    * Why a separate database server?
+    * Why PostgreSQL?
+    * Basics of configuring PostgreSQL.
+    * Demo: deploy PostgreSQL on a db server.
+    * Demo: wire the Django app up to the separate server.
+
+3. Application servers: mod_wsgi, gunicorn              [9:50 - 10:30]
+    * What's an application server?
+    * Introducing mod_wsgi
+    * Configuring Apache and mod_wsgi
+    * Demo: deploy the application on a single server under mod_wsgi.
+    * Introducing Gunicorn
+    * Demo: deploy the application using Gunicorn
+
+[Break: 10:30 - 10:50]
+
+4. Automation                                           [10:50 - 11:10]
+    * Why automate?
+    * What's Fabric?
+    * Our first fabfile.
+    * Demo: re-deploy with Fabric.
+
+5. Multiple web servers                                 [11:10 - 11:25]
+    * Why multiple web servers?
+    * "Shared nothing"
+    * Dealing with media.
+    * Demo: deploy w/Fabric onto multiple servers.
+    * Demo: crash a web server.
+
+6. Load balancers                                       [11:25 - 11:40]
+    * Introducing nginx
+    * Using nginx as a reverse proxy
+    * Demo: set up nginx to proxy to multiple machines.
+
+7. Connection middleware                                [11:40 - 11:50]
+    * What's connection middleware?
+    * Connection middleware options.
+
+8. Next steps.                                          [11:50 - 12:20]
+    * Caching, config. management, redundancy, replication, monitoring,
+      searching, queuing, …
+    * Some suggestions
+    
+BONUS: Configuration management:
+    * CFM basics.
+    * Some tools.
+    * Chef vs. Puppet.
+    * Demo: intro to Chef.
