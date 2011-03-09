@@ -1,0 +1,96 @@
+Howdy!
+
+You're getting this email because you're enrolled in the Python Deployment
+Workshop at PyCon 2011.
+
+The class is going to be fast and furious: think of it as an overview and
+holistic examination rather than a deep dive on any particular topic. Our
+goal is to introduce you to the tools and techniques you'll need to deploy
+and scale a Python project -- but that's a long list, and we have a short
+time. Thus, our technique will be to introduce tools, give you quick
+overviews, and then leave you with links and pointers so that you can learn
+more after the class.
+
+So let's start these pointers now:
+
+Slides and (virtual) handouts
+-----------------------------
+
+All the code, configuration, notes, and slides we'll be using is available
+on Github: http://github.com/jacobian/django-deployment-workshop.
+
+However, **THE CODE THERE ISN'T DONE YET!** This space changes fast, and I'm
+busy updating things to cover new developments in the Python deployment space.
+So pull the code down now if you like, but please remember to update just
+before the class begins. I'll also have all this material on USB sticks to
+pass around the class tomorrow.
+
+All this code is public, and will be available before, during, and after the
+class. It'll continue to be updated over the coming months and years with new
+tools and techniques as I switch to and discover them.
+
+Following along
+---------------
+
+You can think of this class as sort of optionally hands-on. The material's
+very fast-paced, and unfortunately the class is going to be very large -- over
+60 people are enrolled, and so I likely won't be able to move at a speed
+acceptable to everyone. So the class is designed to be perfectly acceptable to
+those who'd rather just sit back and take notes. The class will also be
+recorded, so y'all can go back over anything you missed at your leisure.
+
+If, however, you want to be able to get your hands dirty and follow along,
+you'll need to do a bit of work before we begin.
+
+One of the big challenges of real-world deployment is dealing with the
+differences among different deployment operating systems (and even among OS
+versions). So to make things run smoothly and ensure we're all on the same
+page, I've made a choice: we're only going to cover one OS: Ubuntu 10.04
+LTS (aka "Lucid Lynx").
+
+[I'll explain that choice during the class.]
+
+Thus, for all the examples to work perfectly, you'll need to have access to
+an Ubuntu 10.04 machine. Ideally, you'll want to have access to *three*
+such machines so that you can try out the various load-balancing features
+we'll be covering.
+
+Now, we obviously don't expect y'all to show up to the class with three
+servers in tow, so we're obviously talking virtualization here. If you're
+aiming for the three servers, I'd suggest trying:
+
+   * A local virtualization platform like VirtualBox (free) or VMWare
+     (non-free). Either will be pretty bulletproof against stuff like network
+     outages, but running three VMs on your laptop could a bit dicey.
+     
+     You might also give Vagrant (http://vagrantup.com/) a try -- it's a
+     pretty nifty wrapper around VirtualBox that makes managing multiple
+     VMs pretty painless.
+
+   * A cloud hosting platform like Amazon EC2 (http://aws.amazon.com/) or
+     Rackspace Cloud (http://www.rackspacecloud.com/).
+
+     Of the two, Rackspace is cheaper and easier to get started with for
+     people new to cloud computing. So if you're not already familiar with
+     EC2, I'd suggest giving Rackspace a try.
+
+I'll be using Rackspace for my examples, but as long as you're running
+Ubuntu 10.04 *where* the server (or virtual server) lives is pretty
+irrelevant.
+
+Whatever you choose, you'll need to have these servers up and running by the
+time the class starts. I'll expect everyone who wants to follow along to
+already have their servers booted and running.
+
+Now, if you'd like to try to follow along on a different OS, or with a
+different configuration, that's fine with me. However, the class'll be on a
+tight schedule, so I won't be able to answer too many questions about other
+OSes.
+
+If you have any questions, please feel free to drop me an email
+(jacob@jacobian.org) or find me in the halls today and ask. I'm happy to help
+anyone with pre-class setup today.
+
+See you tomorrow!
+
+Jacob
