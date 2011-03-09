@@ -1,0 +1,25 @@
+Vagrant::Config.run do |config|
+    config.vm.define :web1 do |config|
+      config.vm.box = "lucid32"
+      config.vm.network('33.33.33.10')
+      config.vm.customize do |vm|
+          vm.memory_size = 256
+      end
+    end
+
+    config.vm.define :web2 do |config|
+      config.vm.box = "lucid32"
+      config.vm.network('33.33.33.11')
+      config.vm.customize do |vm|
+          vm.memory_size = 256
+      end
+    end
+    
+    config.vm.define :db1 do |config|
+      config.vm.box = "lucid32"
+      config.vm.network('33.33.33.20')
+      config.vm.customize do |vm|
+          vm.memory_size = 256
+      end
+    end
+end
