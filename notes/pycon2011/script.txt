@@ -145,11 +145,49 @@ While it runs talk about configuration management a bit.
 6. Load balancers
 -----------------
 
+Set up Nginx on web1::
+
+    web1$ aptitude install nginx 
+    web1$ cd /etc/nginx/
+    web1$ rm -rf conf.d/ fastcgi_params koi-* nginx.conf sites-* win-utf 
+    web1$ ln -s /home/web/django-deployment-workshop/nginx/nginx.conf .
+
+Edit Apache conf to listen on port 8000::
+
+    web1$ vim /etc/apache2/apache2.conf
+    web1$ invoke-rc.d apache2 restart
+
+Edit Nginx to point to correct backend - just web1 for now::
+
+    web1$ vim /etc/nginx/nginx.conf 
+    web1$ invoke-rc.d nginx start
+
+Check it out::
+
+    local$ curl -I http://pycon-web1/
+
+Edit Apache on web2 for port 8000::
+
+    web2$ vim /etc/apache2/apache2.conf 
+    web2$ invoke-rc.d apache2 restart
+
+Edit Nginx to point to both backends::
+
+    web1$ vim /etc/nginx/nginx.conf 
+    web1$ invoke-rc.d nginx restart
+
+Check it out, looking at ``X-Handled-By``::
+    
+    local$ curl -I http://pycon-web1/
+
 7. Connection middleware
 ------------------------
 
-8. Next steps.
---------------
+Just look at the pgpool conf.
 
 BONUS: Configuration management
 -------------------------------
+
+Look at the Chef config. Then::
+    
+    local$ fab run_chef
