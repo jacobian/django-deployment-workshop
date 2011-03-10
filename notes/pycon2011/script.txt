@@ -56,7 +56,7 @@ Bootstrap up the example app::
     web1$ mv local_settings.py.template local_settings.py
     web1$ ./manage.py syncdb
     web1$ ./manage.py loaddata test_data.json
-    web1$ ./bin/django runserver 0.0.0.0:8000
+    web1$ ./manage.py runserver 0.0.0.0:8000
     
 Get ``http://pycon-web1:8000/`` - bing!
 
@@ -90,7 +90,7 @@ Wire up the app to PostgreSQL, load data, take a look::
     web1$ vim local_settings.py # DATABASE_HOST = '...'
     web1$ ./manage.py syncdb
     web1$ ./manage.py loaddata test_data.json
-    web1$ ./bin/django runserver 0.0.0.0:8000    
+    web1$ ./manage.py runserver 0.0.0.0:8000    
 
 Hit ``http://pycon-web1:8000/`` -- *boom*.
 
