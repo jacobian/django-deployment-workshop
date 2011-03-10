@@ -127,8 +127,20 @@ Show off a few features of Gunicorn (TTIN, TTOU, etc.).
 4. Automation
 -------------
 
+Run the fabfile::
+
+    local$ fab deploy
+    
+Then talk about it.
+
 5. Multiple web servers
 -----------------------
+
+Add ``web2`` to the fabfile; run::
+
+    local$ fab -H pycon-web2 setup
+
+While it runs talk about configuration management a bit.
 
 6. Load balancers
 -----------------
