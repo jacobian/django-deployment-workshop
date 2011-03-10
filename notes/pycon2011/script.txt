@@ -33,7 +33,7 @@ Hosts file for easier web-ing::
     33.33.33.10 pycon-web1
     33.33.33.11 pycon-web2
     33.33.33.20 pycon-db1
-    
+        
 1. Getting started
 ------------------
 

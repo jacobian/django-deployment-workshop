@@ -26,3 +26,11 @@ sys.path.append('/home/web/myblog/django-mingus')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'mingus.settings'
 import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
+
+
+
+
+
+
+
+

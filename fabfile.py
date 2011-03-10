@@ -12,7 +12,7 @@ from fabric.contrib import project, files
 
 # This is a bit more complicated than needed because I'm using Vagrant
 # for the examples.
-env.hosts = ['pycon-web2']
+env.hosts = ['pycon-web2', 'pycon-web1']
 env.user = 'vagrant'
 env.key_filename = '/Library/Ruby/Gems/1.8/gems/vagrant-0.7.2/keys/vagrant'
 
@@ -38,7 +38,7 @@ def push():
 def update_dependencies():
     "Update Mingus' requirements remotely."
     put("mingus-config/requirements.txt", "%s/requirements.txt", use_sudo=True)
-    sudo("%(root)s/bin/pip install -r %(rot)s/requirements.txt" % env)
+    sudo("%(root)s/bin/pip install -r %(root)s/requirements.txt" % env)
         
 def reload():
     "Reload Apache to pick up new code changes."
@@ -96,3 +96,7 @@ def run_chef():
     project.rsync_project(local_dir='chef', remote_dir='/tmp', delete=True)
     sudo('rsync -ar --delete /tmp/chef/ /etc/chef/')
     sudo('chef-solo')
+    
+    
+    
+    

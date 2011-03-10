@@ -8,7 +8,7 @@ package "libpq-dev"
 package "subversion"
 package "mercurial"
 
-cookbook_file "/etc/apache2/apache2.conf" do
+template "/etc/apache2/apache2.conf" do
     source "apache2.conf"
     owner "root"
     group "root"
