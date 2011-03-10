@@ -44,8 +44,8 @@ Bootstrap up the example app::
                            postgresql-dev postgresql-client build-essential \
                            libpq-dev subversion mercurial
     web1$ easy_install virtualenv
-    web1$ git clone git://github.com/jacobian/django-deployment-workshop.git
     web1$ cd /home/web
+    web1$ git clone git://github.com/jacobian/django-deployment-workshop.git
     web1$ virtualenv myblog
     web1$ cd myblog
     web1$ source bin/activate
