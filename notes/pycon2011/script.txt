@@ -108,8 +108,8 @@ Add our config. Remember to make a python eggs dir (it should be writable by
 apache, but 777 is easier)::
 
     web1$ ln -s /home/web/django-deployment-workshop/apache/apache2.conf .
-    web1$ ln -s /home/web/django-deployment-workshop/mingus-config/mingus.wsgi \
-                /home/web/myblog/mingus.wsgi
+    web1$ cp /home/web/django-deployment-workshop/mingus-config/mingus.wsgi \
+             /home/web/myblog/mingus.wsgi
     web1$ mkdir -m777 -p /var/www/.python-eggs
     web1$ invoke-rc.d apache2 restart
 
