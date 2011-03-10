@@ -38,7 +38,7 @@ def push():
 def update_dependencies():
     "Update Mingus' requirements remotely."
     put("mingus-config/requirements.txt", "%s/requirements.txt", use_sudo=True)
-    sudo("%(root)s/bin/pip install -r %(rot)s/requirements.txt" % env)
+    sudo("%(root)s/bin/pip install -r %(root)s/requirements.txt" % env)
         
 def reload():
     "Reload Apache to pick up new code changes."
