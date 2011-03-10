@@ -1,0 +1,108 @@
+=================
+PyCon 2011 script
+=================
+
+This is my "working script" -- I'll be using these commands, verbatim, as I
+walk through the class. They probably only work on Ubuntu 10.04
+
+These notes are primarily for me only, so they may not make a whole lot of
+sense without my narrative. However, for those not in the class, judicious use
+of ``man`` and Google along with experimentation should make for an
+interesting afternoon.
+
+Pre-class
+---------
+
+Boot::
+
+    local$ cd vagrant
+    local$ vagrant up
+    
+Hostname (for prompts); better tab completion::
+
+    <all>$ sudo hostname <whatever>
+    <all>$ sudo aptitude install bash-completion
+    <all>$ echo ". /etc/bash_completion" >> ~/.bashrc
+
+Hosts file for easier web-ing::
+
+    33.33.33.10 pycon-web1
+    33.33.33.11 pycon-web2
+    33.33.33.20 pycon-db1
+
+1. Getting started
+------------------
+
+Bootstrap up the example app::
+
+    web1$ mkdir -p /home/web
+    web1$ sudo aptitude update
+    web1$ sudo aptitude install git-core python-dev python-setuptools postgresql-dev postgresql-client build-essential libpq-dev subversion
+    web1$ sudo easy_install virtualenv
+    web1$ git clone git://github.com/jacobian/django-deployment-workshop.git
+    web1$ cd /home/web
+    web1$ virtualenv myblog
+    web1$ cd myblog
+    web1$ source bin/activate
+    web1$ git clone git://github.com/montylounge/django-mingus.git
+    web1$ cd django-mingus/mingus
+    web1$ pip install -r stable-requirements.txt
+    web1$ mv local_settings.py.template local_settings.py
+    web1$ ./manage.py syncdb
+    web1$ ./manage.py loaddata test_data.json
+    web1$ ./bin/django runserver 0.0.0.0:8000
+    
+Get ``http://pycon-web1:8000/`` - bing!
+
+2. Database server: PostgreSQL
+------------------------------
+
+Install and configure Postgres::
+
+    db1$ sudo aptitude update
+    db1$ sudo aptitude install git-core postgresql
+    db1$ mkdir -p /home/web
+    db1$ cd /home/web
+    db1$ git clone git://github.com/jacobian/django-deployment-workshop.git
+    db1$ cd /etc/postgresql/8.4/main/
+    db1$ sudo invoke-rc.d postgresql-8.4 stop
+    db1$ sudo mv postgresql.conf postgresql.conf.orig
+    db1$ sudo mv pg_hba.conf pg_hba.conf.orig
+    db1$ ln -s /home/web/django-deployment-workshop/postgresql/postgresql.conf
+    db1$ ln -s /home/web/django-deployment-workshop/postgresql/pg_hba.conf .
+    db1$ sudo invoke-rc.d postgresql-8.4 start
+
+And create users and database. Root user for convenience::
+
+    db1$ sudo -u postgres createuser vagrant
+    db1$ createuser mingus
+    db1$ createdb -O mingus mingus
+
+Wire up the app to PostgreSQL, load data, take a look::
+
+    web1$ cd /home/web/myblog/django-mingus/mingus
+    web1$ vim local_settings.py # DATABASE_HOST = '...'
+    web1$ ./bin/django runserver 0.0.0.0:8000    
+
+Hit ``http://pycon-web1:8000/`` -- *boom*.
+
+3. Application servers: mod_wsgi, gunicorn
+------------------------------------------
+
+4. Automation
+-------------
+
+5. Multiple web servers
+-----------------------
+
+6. Load balancers
+-----------------
+
+7. Connection middleware
+------------------------
+
+8. Next steps.
+--------------
+
+BONUS: Configuration management
+-------------------------------
