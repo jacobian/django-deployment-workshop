@@ -1,37 +1,35 @@
 """
 The tutorial's first fabfile: automate deployment onto a single server.
 
-If you have Fabric installed system-wide, run with::
+Run with::
 
-    fab -f single-server.py <command>
-
-The buildout in ``fumblerooski-site`` has Fabric, too, so you can::
-
-    fumblerooski-site/bin/fab -f ../fabfiles/single-server.py <command>
+    fab -f fabfiles/single-server.py <command>
+    
+Expects to be run from the parent directory.
 """
-
-from __future__ import with_statement
 
 import os
 from fabric.api import *
 
 # I have entries in /etc/hosts which make these names work. 
 # If I didn't, I'd just use IP addresses.
-env.hosts = ['oscon-web1']
+env.hosts = ['pyweb-web1']
 env.user = 'root'
 
-env.code_root = "/home/web/django-deployment-workshop"
-env.buildout_root = os.path.join(env.code_root, "fumblerooski-site")
+# Constants for where everything lives on the server.
+env.root = "/home/web/myblog"
 
 def push():
     "Push out new code to the server."
     with cd(env.code_root):
         run("git pull")
+        put("mingus-config/web1.py", "%(root)s/django-mingus/mingus/settings.py" % env)
+        put("mingus-config/mingus.wsgi", "%(root)s/mingus.wsgi" % env)
         
-def buildout():
-    "Run the buildout remotely."
-    with cd(env.buildout_root):
-        run("./bin/buildout")
+def update_dependencies():
+    "Update Mingus' requirements remotely."
+    put("mingus-config/requirements.txt", "%s/requirements.txt")
+    run("%(root)s/bin/pip install -r %(rot)s/requirements.txt" % env)
         
 def reload():
     "Reload Apache to pick up new code changes."

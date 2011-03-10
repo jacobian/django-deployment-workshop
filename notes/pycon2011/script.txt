@@ -10,6 +10,9 @@ sense without my narrative. However, for those not in the class, judicious use
 of ``man`` and Google along with experimentation should make for an
 interesting afternoon.
 
+All of the follow commands assume I'm running as root. Judicious use of
+``sudo`` would be required otherwise.
+
 Pre-class
 ---------
 
@@ -29,21 +32,24 @@ Hosts file for easier web-ing::
     33.33.33.10 pycon-web1
     33.33.33.11 pycon-web2
     33.33.33.20 pycon-db1
-
+    
 1. Getting started
 ------------------
 
 Bootstrap up the example app::
 
     web1$ mkdir -p /home/web
-    web1$ sudo aptitude update
-    web1$ sudo aptitude install git-core python-dev python-setuptools postgresql-dev postgresql-client build-essential libpq-dev subversion
-    web1$ sudo easy_install virtualenv
+    web1$ aptitude update
+    web1$ aptitude install git-core python-dev python-setuptools \ 
+                           postgresql-dev postgresql-client build-essential \
+                           libpq-dev subversion mercurial
+    web1$ easy_install virtualenv
     web1$ git clone git://github.com/jacobian/django-deployment-workshop.git
     web1$ cd /home/web
     web1$ virtualenv myblog
     web1$ cd myblog
     web1$ source bin/activate
+    web1$ pip install -U pip
     web1$ git clone git://github.com/montylounge/django-mingus.git
     web1$ cd django-mingus/mingus
     web1$ pip install -r stable-requirements.txt
@@ -59,22 +65,22 @@ Get ``http://pycon-web1:8000/`` - bing!
 
 Install and configure Postgres::
 
-    db1$ sudo aptitude update
-    db1$ sudo aptitude install git-core postgresql
+    db1$ aptitude update
+    db1$ aptitude install git-core postgresql
     db1$ mkdir -p /home/web
     db1$ cd /home/web
     db1$ git clone git://github.com/jacobian/django-deployment-workshop.git
     db1$ cd /etc/postgresql/8.4/main/
-    db1$ sudo invoke-rc.d postgresql-8.4 stop
-    db1$ sudo mv postgresql.conf postgresql.conf.orig
-    db1$ sudo mv pg_hba.conf pg_hba.conf.orig
-    db1$ ln -s /home/web/django-deployment-workshop/postgresql/postgresql.conf
+    db1$ invoke-rc.d postgresql-8.4 stop
+    db1$ mv postgresql.conf postgresql.conf.orig
+    db1$ mv pg_hba.conf pg_hba.conf.orig
+    db1$ ln -s /home/web/django-deployment-workshop/postgresql/postgresql.conf .
     db1$ ln -s /home/web/django-deployment-workshop/postgresql/pg_hba.conf .
-    db1$ sudo invoke-rc.d postgresql-8.4 start
+    db1$ invoke-rc.d postgresql-8.4 start
 
 And create users and database. Root user for convenience::
 
-    db1$ sudo -u postgres createuser vagrant
+    db1$ sudo -u postgres createuser root
     db1$ createuser mingus
     db1$ createdb -O mingus mingus
 
@@ -88,6 +94,30 @@ Hit ``http://pycon-web1:8000/`` -- *boom*.
 
 3. Application servers: mod_wsgi, gunicorn
 ------------------------------------------
+
+Install Apache and mod_wsgi, and zap away all the Ubuntu cruft::
+
+    web1$ aptitude install apache2 libapache2-mod-wsgi
+    web1$ cd /etc/apache2/
+    web1$ rm -rf apache2.conf conf.d/ httpd.conf magic mods-* sites-* ports.conf 
+
+Add our config. Remember to make a python eggs dir (it should be writable by
+apache, but 777 is easier)::
+
+    web1$ ln -s /home/web/django-deployment-workshop/apache/apache2.conf .
+    web1$ ln -s /home/web/django-deployment-workshop/mingus-config/mingus.wsgi \
+                /home/web/myblog/mingus.wsgi
+    web1$ mkdir -m777 -p /var/www/.python-eggs
+    web1$ invoke-rc.d apache2 restart
+
+Hit ``http://pycon-web1/`` -- *boom*.
+
+Now try it with Gunicorn::
+
+    web1$ pip install gunicorn
+    web1$ cd /home/web/myblog/django-mingus/mingus
+    web1$ vim settings.py # INSTALLED_APPS += "gunicorn"
+    web1$ ./manage.py run_gunicorn
 
 4. Automation
 -------------
