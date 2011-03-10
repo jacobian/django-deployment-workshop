@@ -21,10 +21,11 @@ Boot::
     local$ cd vagrant
     local$ vagrant up
     
-Hostname (for prompts); better tab completion::
+Update apt; hostname (for prompts); better tab completion::
 
-    <all>$ sudo hostname <whatever>
-    <all>$ sudo aptitude install bash-completion
+    <all>$ aptitude update
+    <all>$ hostname <whatever>
+    <all>$ aptitude install bash-completion
     <all>$ echo ". /etc/bash_completion" >> ~/.bashrc
 
 Hosts file for easier web-ing::
@@ -39,7 +40,6 @@ Hosts file for easier web-ing::
 Bootstrap up the example app::
 
     web1$ mkdir -p /home/web
-    web1$ aptitude update
     web1$ aptitude install git-core python-dev python-setuptools \ 
                            postgresql-dev postgresql-client build-essential \
                            libpq-dev subversion mercurial
@@ -65,7 +65,6 @@ Get ``http://pycon-web1:8000/`` - bing!
 
 Install and configure Postgres::
 
-    db1$ aptitude update
     db1$ aptitude install git-core postgresql
     db1$ mkdir -p /home/web
     db1$ cd /home/web
