@@ -1,41 +1,40 @@
 """
-This is my private fabfile I use to automate parts of the teaching of the
-class. It doesn't really serve any pedagogical purpose; see the fabiles in
-``fabfiles/`` for better examples.
+The tutorial's first fabfile: automate deployment onto a single server.
 """
 
 import os
-import cloudservers
 from fabric.api import *
-from fabric.contrib import files
-from unipath import FSPath as Path
 
-CS = cloudservers.CloudServers(os.environ['CLOUD_SERVERS_USERNAME'],
-                               os.environ['CLOUD_SERVERS_API_KEY'])
+# This is a bit more complicated than needed because I'm using Vagrant
+# for the examples.
+env.hosts = ['pycon-web1']
+env.user = 'vagrant'
+env.key_filename = '/Library/Ruby/Gems/1.8/gems/vagrant-0.7.2/keys/vagrant'
 
-env.hosts = ['oscon-web1', 'oscon-web2', 'oscon-db1']
-env.user = 'root'
+# Constants for where everything lives on the server.
+env.root = "/home/web/myblog"
 
-def bootem():    
-    servers = []
-    flavor = CS.flavors.find(ram=256)
-    image = CS.images.find(name="Ubuntu 10.04 LTS (lucid)")
-    for name in env.hosts:
-        server = CS.servers.create(name, flavor=flavor, image=image)
-        servers.append(server)
-        print "%s: ips: %s/%s pass: %s" % (name, server.public_ip, server.private_ip, server.adminPass)
-
-def copyid():
-    for name in env.hosts:
-        local('ssh-copy-id %s' % name)
-
-def setup():
-    run('aptitude update && aptitude -y safe-upgrade')
-    run('aptitude -y install bash-completion language-pack-en')
-    run('echo ". /etc/bash_completion" >> .bashrc')
-
-def killem():
-    for name in env.hosts:
-        CS.servers.find(name=name).delete()
-
-del Path
+def push():
+    "Push out new code to the server."
+    with cd("%(root)s/django-mingus" % env):
+        sudo("git pull")
+        
+    put("mingus-config/web1.py",
+        "%(root)s/django-mingus/mingus/settings.py" % env,
+        use_sudo=True)
+    put("mingus-config/mingus.wsgi", "%(root)s/mingus.wsgi" % env, use_sudo=True)
+        
+def update_dependencies():
+    "Update Mingus' requirements remotely."
+    put("mingus-config/requirements.txt", "%s/requirements.txt", use_sudo=True)
+    sudo("%(root)s/bin/pip install -r %(rot)s/requirements.txt" % env)
+        
+def reload():
+    "Reload Apache to pick up new code changes."
+    sudo("invoke-rc.d apache2 reload")
+    
+def deploy():
+    "Full deploy: push, buildout, and reload."
+    push()
+    update_dependencies()
+    reload()

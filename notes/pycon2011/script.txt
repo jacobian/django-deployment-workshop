@@ -86,8 +86,11 @@ And create users and database. Root user for convenience::
 
 Wire up the app to PostgreSQL, load data, take a look::
 
+    web1$ pip install psycopg2
     web1$ cd /home/web/myblog/django-mingus/mingus
     web1$ vim local_settings.py # DATABASE_HOST = '...'
+    web1$ ./manage.py syncdb
+    web1$ ./manage.py loaddata test_data.json
     web1$ ./bin/django runserver 0.0.0.0:8000    
 
 Hit ``http://pycon-web1:8000/`` -- *boom*.
@@ -98,6 +101,7 @@ Hit ``http://pycon-web1:8000/`` -- *boom*.
 Install Apache and mod_wsgi, and zap away all the Ubuntu cruft::
 
     web1$ aptitude install apache2 libapache2-mod-wsgi
+    web1$ mkdir /home/web/static # DocumentRoot
     web1$ cd /etc/apache2/
     web1$ rm -rf apache2.conf conf.d/ httpd.conf magic mods-* sites-* ports.conf 
 
@@ -115,9 +119,10 @@ Hit ``http://pycon-web1/`` -- *boom*.
 Now try it with Gunicorn::
 
     web1$ pip install gunicorn
-    web1$ cd /home/web/myblog/django-mingus/mingus
-    web1$ vim settings.py # INSTALLED_APPS += "gunicorn"
-    web1$ ./manage.py run_gunicorn
+    web1$ cd /home/web/myblog/django-mingus
+    web1$ gunicorn_django -b 0.0.0.0 mingus/settings.py
+    
+Show off a few features of Gunicorn (TTIN, TTOU, etc.).
 
 4. Automation
 -------------
